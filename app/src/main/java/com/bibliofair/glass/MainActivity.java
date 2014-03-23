@@ -42,11 +42,12 @@ public class MainActivity extends Activity {
         if (requestCode == GET_BOOK_ISBN) {
             if (resultCode == Activity.RESULT_OK) {
                 String text = data.getStringExtra(ScanCodeActivity.EXTRA_TEXT);
-                Log.e("MainActivity", "3");
+                Log.d("MainActivity", "3");
                 if (isValidISBN(text)) {
+                    Log.d("MainActivity", text);
                     try {
                         HttpClient httpclient = new DefaultHttpClient();
-                        String URL = "http://data.theeuropeanlibrary.org/opensearch/json?query=" + text + "&apikey=ev3fbloutqdhrqe3pidpal4bav";
+                        String URL = "http://www.bibliofair.com/api/v1/tel?id=5230ce11c1cf031f18000002&q=0733426093&token=c6c2e0b0152a92e32b41e2d1ac0a2160e53c9d313a5ebddc273e7b814528a412cb562b6f581b128cb80d54a0c2033b5b659523bbecb068a8b20753f97e16f659";
                         HttpResponse response = httpclient.execute(new HttpGet(URL));
                         StatusLine statusLine = response.getStatusLine();
                         if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
@@ -55,17 +56,21 @@ public class MainActivity extends Activity {
                             out.close();
                             String responseString = out.toString();
 
-                            Log.e("MainActivity", text);
-                            showStatus(R.string.valid_code, text);
-
+                            Book book = Book.parseBookFromJSON(responseString);
+                            book.setIsbn(text);
+                            showBook(book);
                         } else {
                             //Closes the connection.
                             response.getEntity().getContent().close();
                             throw new IOException(statusLine.getReasonPhrase());
                         }
+
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+
+
+                    //showStatus(R.string.valid_code, text);
                 } else {
                     showStatus(R.string.invalid_code, "");
                 }
@@ -79,8 +84,17 @@ public class MainActivity extends Activity {
         return true;
     }
 
-    private void showStatus(int statusCode, String text) {
-        Log.e("MainActivity", "4");
+    private void showBook (Book book) {
+        Card statusCard = new Card(this);
+
+        statusCard.setText("Title: " + book.getTitle() + '\n' + "Author: " + book.getAuthor() + '\n' + "ISBN: " + book.getIsbn());
+
+        View cardView = statusCard.toView();
+        setContentView(cardView);
+    }
+
+    private void showStatus (int statusCode, String text) {
+        Log.e("MainActivity", text);
         String status = this.getString(statusCode);
         Card statusCard = new Card(this);
         if (text.equals("")) {

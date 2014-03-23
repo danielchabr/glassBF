@@ -30,7 +30,7 @@ public class ScanCodeActivity extends Activity {
 
     Camera.PreviewCallback previewCb = new Camera.PreviewCallback() {
         public void onPreviewFrame(byte[] data, Camera camera) {
-            Log.e("ScanCodeActivity", "preview callback");
+            //Log.d("ScanCodeActivity", "preview callback");
             Camera.Parameters parameters = camera.getParameters();
             Camera.Size size = parameters.getPreviewSize();
 
@@ -93,7 +93,7 @@ public class ScanCodeActivity extends Activity {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.e("ScanCodeActivity", "1");
+        Log.d("ScanCodeActivity", "1");
         //content view and keep the window on
         setContentView(R.layout.activity_scan_code);
         this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -130,7 +130,7 @@ public class ScanCodeActivity extends Activity {
     }
 
     private void releaseCamera() {
-        Log.e("ScanCodeActivity", "releaseCamera");
+        Log.d("ScanCodeActivity", "releaseCamera");
         if (mCamera != null) {
             previewing = false;
             mCamera.setPreviewCallback(null);
@@ -165,6 +165,8 @@ public class ScanCodeActivity extends Activity {
         public void surfaceCreated(SurfaceHolder holder) {
             // The Surface has been created, now tell the camera where to draw the preview.
             try {
+                //Log.d("ScanCodeActivity", (mCamera == null);
+                //Log.d("ScanCodeActivity", holder == null);
                 mCamera.setPreviewDisplay(holder);
             } catch (IOException e) {
                 Log.d("DBG", "Error setting camera preview: " + e.getMessage());
