@@ -47,9 +47,6 @@ public class MainActivity extends Activity {
                 if (isValidISBN(text)) {
                     Log.d("MainActivity", text);
                     new BookRequest().execute(text);
-
-
-
                     //showStatus(R.string.valid_code, text);
                 } else {
                     showStatus(R.string.invalid_code, "");
@@ -82,6 +79,9 @@ public class MainActivity extends Activity {
         } else {
             statusCard.setText(status + " " + text);
         }
+
+        statusCard.setImageLayout(Card.ImageLayout.LEFT);
+        statusCard.addImage(R.drawable.silmarilion);
 
         View cardView = statusCard.toView();
         setContentView(cardView);
