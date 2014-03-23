@@ -30,6 +30,7 @@ public class MainActivity extends Activity {
                 String text = data.getStringExtra(ScanCodeActivity.EXTRA_TEXT);
                 Log.e("MainActivity", "3");
                 if (isValidISBN(text)) {
+                    Log.e("MainActivity", text);
                     showStatus(R.string.valid_code, text);
                 } else {
                     showStatus(R.string.invalid_code, "");

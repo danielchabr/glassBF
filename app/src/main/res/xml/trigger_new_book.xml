@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<trigger keyword="@string/trigger_add_a_book">
+<trigger keyword="@string/trigger_new_book">
     <constraints network="true" />
 </trigger>

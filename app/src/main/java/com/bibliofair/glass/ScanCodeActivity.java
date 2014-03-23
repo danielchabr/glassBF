@@ -200,7 +200,7 @@ public class ScanCodeActivity extends Activity {
                 //set params
                 Camera.Parameters parameters = mCamera.getParameters();
                 parameters.setPreviewSize(640, 360);
-                //parameters.setPreviewFpsRange(30000, 30000);
+                parameters.setPreviewFpsRange(30000, 30000);
                 mCamera.setParameters(parameters);
 
                 //start the preview && auto focus

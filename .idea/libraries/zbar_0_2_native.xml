@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="zbar-0.2-native">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/app/libs/zbar-0.2-native.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

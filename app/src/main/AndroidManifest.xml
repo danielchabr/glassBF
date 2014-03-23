@@ -24,7 +24,7 @@
 
             <meta-data
                 android:name="com.google.android.glass.VoiceTrigger"
-                android:resource="@xml/trigger_add_a_book" />
+                android:resource="@xml/trigger_new_book" />
         </activity>
 
         <activity
