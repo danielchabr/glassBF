@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">glass</string>
+    <string name="app_name">BiblioFair</string>
+    <string name="trigger_add_a_book">add a book</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_scan_code">ScanCodeActivity</string>
 
 </resources>
