@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -22,24 +21,27 @@ import net.sourceforge.zbar.SymbolSet;
 import java.io.IOException;
 
 
-public class ScanCodeActivity extends ActionBarActivity {
+public class ScanCodeActivity extends Activity {
 
     public static final int REQUEST_CODE = 43;
     public static final String EXTRA_TEXT = "text";
 
+    /*
+    //what does it do?
     public static void call(Activity activity) {
         activity.startActivityForResult(new Intent(activity, ScanCodeActivity.class), REQUEST_CODE);
-    }
+    }*/
 
     ImageScanner scanner;
+
     Camera.PreviewCallback previewCb = new Camera.PreviewCallback() {
         public void onPreviewFrame(byte[] data, Camera camera) {
             Camera.Parameters parameters = camera.getParameters();
             Camera.Size size = parameters.getPreviewSize();
 
+            //grayscale image
             Image barcode = new Image(size.width, size.height, "Y800");
             barcode.setData(data);
-
             int result = scanner.scanImage(barcode);
 
             if (result != 0) {
@@ -97,14 +99,14 @@ public class ScanCodeActivity extends ActionBarActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //content view and keep the window on
         setContentView(R.layout.activity_scan_code);
-
         this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         autoFocusHandler = new Handler();
         mCamera = getCameraInstance();
 
-        /* Instance barcode scanner */
+        //barcode scanner
         scanner = new ImageScanner();
         scanner.setConfig(0, Config.X_DENSITY, 3);
         scanner.setConfig(0, Config.Y_DENSITY, 3);
@@ -197,11 +199,13 @@ public class ScanCodeActivity extends ActionBarActivity {
                 mCamera.setPreviewDisplay(mHolder);
                 mCamera.setPreviewCallback(previewCallback);
 
+                //set params
                 Camera.Parameters parameters = mCamera.getParameters();
                 parameters.setPreviewSize(640, 360);
-                parameters.setPreviewFpsRange(30000, 30000);
+                //parameters.setPreviewFpsRange(30000, 30000);
                 mCamera.setParameters(parameters);
 
+                //start the preview && auto focus
                 mCamera.startPreview();
                 mCamera.autoFocus(autoFocusCallback);
             } catch (Exception e) {
