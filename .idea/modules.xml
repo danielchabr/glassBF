@@ -3,7 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/glass.iml" filepath="$PROJECT_DIR$/glass.iml" />
+      <module fileurl="file://$PROJECT_DIR$/glassBF.iml" filepath="$PROJECT_DIR$/glassBF.iml" />
     </modules>
   </component>
 </project>
