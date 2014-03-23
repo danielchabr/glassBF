@@ -6,5 +6,9 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_scan_code">ScanCodeActivity</string>
+    <string name="valid_code">Code scanning was succesful</string>
+    <string name="invalid_code">Scanned code is invalid</string>
+    <string name="scanning_failed">Bar code scanning failed</string>
+
 
 </resources>
