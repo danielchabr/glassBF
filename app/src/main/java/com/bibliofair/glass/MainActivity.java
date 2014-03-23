@@ -47,6 +47,7 @@ public class MainActivity extends Activity {
                 if (isValidISBN(text)) {
                     Log.d("MainActivity", text);
                     new BookRequest().execute(text);
+                    //new AddBookRequest().execute(text);
                     //showStatus(R.string.valid_code, text);
                 } else {
                     showStatus(R.string.invalid_code, "");
@@ -74,13 +75,12 @@ public class MainActivity extends Activity {
         Log.e("MainActivity", text);
         String status = this.getString(statusCode);
         Card statusCard = new Card(this);
+        statusCard.setImageLayout(Card.ImageLayout.LEFT);
         if (text.equals("")) {
             statusCard.setText(status);
         } else {
             statusCard.setText(status + " " + text);
         }
-
-        statusCard.setImageLayout(Card.ImageLayout.LEFT);
         statusCard.addImage(R.drawable.silmarilion);
 
         View cardView = statusCard.toView();
@@ -95,7 +95,7 @@ public class MainActivity extends Activity {
         protected Book doInBackground(String... params) {
             try {
                 HttpClient httpclient = new DefaultHttpClient();
-                String URL = "http://www.bibliofair.com/api/v1/tel?id=5230ce11c1cf031f18000002&q=" + ISBNConvertor.ISBN1310(params[0]) + "&token=c6c2e0b0152a92e32b41e2d1ac0a2160e53c9d313a5ebddc273e7b814528a412cb562b6f581b128cb80d54a0c2033b5b659523bbecb068a8b20753f97e16f659";
+                String URL = "http://www.bibliofair.com/api/v1/tel?id=5230ce11c1cf031f18000002&q=8020410775&token=c6c2e0b0152a92e32b41e2d1ac0a2160e53c9d313a5ebddc273e7b814528a412cb562b6f581b128cb80d54a0c2033b5b659523bbecb068a8b20753f97e16f659";
                 HttpGet get = new HttpGet(URL);
                 HttpResponse response = httpclient.execute(get);
                 StatusLine statusLine = response.getStatusLine();
@@ -125,4 +125,45 @@ public class MainActivity extends Activity {
             showBook(book);
         }
     }
+
+    /*class AddBookRequest extends AsyncTask<String, Void, Book> {
+
+        @Override
+        protected Book doInBackground(String... params) {
+            try {
+                HttpClient httpclient = new DefaultHttpClient();
+                String URL = "http://www.bibliofair.com/api/v1/library";
+                HttpPost post = new HttpPost(URL);
+                post.addHeader("Cookie", "id=5230ce11c1cf031f18000002; token=c6c2e0b0152a92e32b41e2d1ac0a2160e53c9d313a5ebddc273e7b814528a412cb562b6f581b128cb80d54a0c2033b5b659523bbecb068a8b20753f97e16f659; lang=cz");
+                post.setHeader("Content-Type", "application/json");
+                post.setHeader("Accept", "application/json");
+                post.setEntity(new StringEntity("{\"title\":\"Silmarillion\", \"author\":\"J. R. R. Tolkien\", \"isbn\":\"8020410775\"}"));
+                HttpResponse response = httpclient.execute(post);
+                StatusLine statusLine = response.getStatusLine();
+                if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
+                    ByteArrayOutputStream out = new ByteArrayOutputStream();
+                    response.getEntity().writeTo(out);
+                    out.close();
+                    String responseString = out.toString();
+
+                    Book book = Book.parseBookFromJSON(responseString);
+                    book.setIsbn(params[0]);
+                    return book;
+                } else {
+                    //Closes the connection.
+                    response.getEntity().getContent().close();
+                    throw new IOException(statusLine.getReasonPhrase());
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Book book) {
+            //showBook(book);
+        }
+    }*/
 }
