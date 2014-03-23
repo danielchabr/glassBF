@@ -2,6 +2,7 @@ package com.bibliofair.glass;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -45,30 +46,8 @@ public class MainActivity extends Activity {
                 Log.d("MainActivity", "3");
                 if (isValidISBN(text)) {
                     Log.d("MainActivity", text);
-                    try {
-                        HttpClient httpclient = new DefaultHttpClient();
-                        String URL = "http://www.bibliofair.com/api/v1/tel?id=5230ce11c1cf031f18000002&q=" + ISBNConvertor.ISBN1310(text) + "&token=c6c2e0b0152a92e32b41e2d1ac0a2160e53c9d313a5ebddc273e7b814528a412cb562b6f581b128cb80d54a0c2033b5b659523bbecb068a8b20753f97e16f659";
-                        HttpGet get = new HttpGet(URL);
-                        HttpResponse response = httpclient.execute(get);
-                        StatusLine statusLine = response.getStatusLine();
-                        if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
-                            ByteArrayOutputStream out = new ByteArrayOutputStream();
-                            response.getEntity().writeTo(out);
-                            out.close();
-                            String responseString = out.toString();
+                    new BookRequest().execute(text);
 
-                            Book book = Book.parseBookFromJSON(responseString);
-                            book.setIsbn(text);
-                            showBook(book);
-                        } else {
-                            //Closes the connection.
-                            response.getEntity().getContent().close();
-                            throw new IOException(statusLine.getReasonPhrase());
-                        }
-
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
 
 
                     //showStatus(R.string.valid_code, text);
@@ -85,7 +64,7 @@ public class MainActivity extends Activity {
         return true;
     }
 
-    private void showBook (Book book) {
+    public void showBook (Book book) {
         Card statusCard = new Card(this);
 
         statusCard.setText("Title: " + book.getTitle() + '\n' + "Author: " + book.getAuthor() + '\n' + "ISBN: " + book.getIsbn());
@@ -108,4 +87,42 @@ public class MainActivity extends Activity {
         setContentView(cardView);
     }
 
+
+
+    class BookRequest extends AsyncTask<String, Void, Book> {
+
+        @Override
+        protected Book doInBackground(String... params) {
+            try {
+                HttpClient httpclient = new DefaultHttpClient();
+                String URL = "http://www.bibliofair.com/api/v1/tel?id=5230ce11c1cf031f18000002&q=" + ISBNConvertor.ISBN1310(params[0]) + "&token=c6c2e0b0152a92e32b41e2d1ac0a2160e53c9d313a5ebddc273e7b814528a412cb562b6f581b128cb80d54a0c2033b5b659523bbecb068a8b20753f97e16f659";
+                HttpGet get = new HttpGet(URL);
+                HttpResponse response = httpclient.execute(get);
+                StatusLine statusLine = response.getStatusLine();
+                if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
+                    ByteArrayOutputStream out = new ByteArrayOutputStream();
+                    response.getEntity().writeTo(out);
+                    out.close();
+                    String responseString = out.toString();
+
+                    Book book = Book.parseBookFromJSON(responseString);
+                    book.setIsbn(params[0]);
+                    return book;
+                } else {
+                    //Closes the connection.
+                    response.getEntity().getContent().close();
+                    throw new IOException(statusLine.getReasonPhrase());
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Book book) {
+            showBook(book);
+        }
+    }
 }
