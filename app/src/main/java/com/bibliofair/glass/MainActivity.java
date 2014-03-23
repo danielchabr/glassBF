@@ -25,7 +25,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main);
         Log.e("MainActivity", "1");
         Intent scanCodeIntent = new Intent(this, ScanCodeActivity.class);
         startActivityForResult(scanCodeIntent, GET_BOOK_ISBN);
@@ -48,7 +48,8 @@ public class MainActivity extends Activity {
                     try {
                         HttpClient httpclient = new DefaultHttpClient();
                         String URL = "http://www.bibliofair.com/api/v1/tel?id=5230ce11c1cf031f18000002&q=" + ISBNConvertor.ISBN1310(text) + "&token=c6c2e0b0152a92e32b41e2d1ac0a2160e53c9d313a5ebddc273e7b814528a412cb562b6f581b128cb80d54a0c2033b5b659523bbecb068a8b20753f97e16f659";
-                        HttpResponse response = httpclient.execute(new HttpGet(URL));
+                        HttpGet get = new HttpGet(URL);
+                        HttpResponse response = httpclient.execute(get);
                         StatusLine statusLine = response.getStatusLine();
                         if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
                             ByteArrayOutputStream out = new ByteArrayOutputStream();
