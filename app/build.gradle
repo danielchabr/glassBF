@@ -22,4 +22,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:+'
     compile files('libs/zbar-0.2.jar')
     compile files('libs/gdk.jar')
+    compile files('libs/zbar-0.2-native.jar')
 }

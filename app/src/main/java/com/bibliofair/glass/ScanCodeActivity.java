@@ -23,19 +23,14 @@ import java.io.IOException;
 
 public class ScanCodeActivity extends Activity {
 
-    public static final int REQUEST_CODE = 43;
     public static final String EXTRA_TEXT = "text";
 
-    /*
-    //what does it do?
-    public static void call(Activity activity) {
-        activity.startActivityForResult(new Intent(activity, ScanCodeActivity.class), REQUEST_CODE);
-    }*/
 
     ImageScanner scanner;
 
     Camera.PreviewCallback previewCb = new Camera.PreviewCallback() {
         public void onPreviewFrame(byte[] data, Camera camera) {
+            Log.e("ScanCodeActivity", "preview callback");
             Camera.Parameters parameters = camera.getParameters();
             Camera.Size size = parameters.getPreviewSize();
 
@@ -98,7 +93,7 @@ public class ScanCodeActivity extends Activity {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Log.e("ScanCodeActivity", "1");
         //content view and keep the window on
         setContentView(R.layout.activity_scan_code);
         this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -114,6 +109,7 @@ public class ScanCodeActivity extends Activity {
         mPreview = new CameraPreview(this, mCamera, previewCb, autoFocusCB);
         FrameLayout preview = (FrameLayout) findViewById(R.id.cameraPreview);
         preview.addView(mPreview);
+        Log.e("ScanCodeActivity", "2");
     }
 
     @Override
@@ -134,6 +130,7 @@ public class ScanCodeActivity extends Activity {
     }
 
     private void releaseCamera() {
+        Log.e("ScanCodeActivity", "releaseCamera");
         if (mCamera != null) {
             previewing = false;
             mCamera.setPreviewCallback(null);
@@ -183,6 +180,7 @@ public class ScanCodeActivity extends Activity {
          * If your preview can change or rotate, take care of those events here.
          * Make sure to stop the preview before resizing or reformatting it.
          */
+            Log.e("ScanCodeActivity", "surfaceChanged called");
             if (mHolder.getSurface() == null) {
                 // preview surface does not exist
                 return;
